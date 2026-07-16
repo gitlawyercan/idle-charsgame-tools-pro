@@ -1,1 +1,0 @@
-# idle-charsgame-tools-pro
