@@ -1,4 +1,4 @@
-# Project-Idle-tools
+# Project-Idle-tools（灰烬之地游戏工具）
 
 > Chrome 扩展 — 自动化工具集，面向 [idle.charsgame.com](https://idle.charsgame.com) 的多账号管理、循环采集/制造/交易、数据统计。
 
