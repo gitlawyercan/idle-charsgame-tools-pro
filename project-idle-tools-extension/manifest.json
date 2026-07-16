@@ -1,0 +1,41 @@
+{
+  "manifest_version": 3,
+  "name": "Project-Idle-tools",
+  "version": "11.0",
+  "description": "自动填表登录 + 账号分组管理 + 面板拖拽折叠 + Token提取 + 日志 + 手动提取价格 + 循环切号 + 循环采集 + 循环出售 + 循环领取 + 循环购买 + 手动选择登录 + 循环检测背包 + 循环检测仓库 + 循环检测技能等级",
+  "author": "You",
+
+  "host_permissions": [
+    "https://idle.charsgame.com/*"
+  ],
+
+  "content_scripts": [
+    {
+      "matches": [
+        "https://idle.charsgame.com/auth*",
+        "https://idle.charsgame.com/game/inventory*",
+        "https://idle.charsgame.com/game",
+        "https://idle.charsgame.com/game/*"
+      ],
+      "js": [
+        "accounts-config.js",
+        "shared-styles.js",
+        "items-database.js",
+        "shared-utils.js",
+        "cycle-base.js",
+        "content.js",
+        "manual-login.js",
+        "cycle-buy.js",
+        "cycle-inventory.js",
+        "cycle-warehouse.js",
+        "cycle-skill-level.js"
+      ],
+      "run_at": "document_end"
+    }
+  ],
+
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Project-Idle-tools"
+  }
+}

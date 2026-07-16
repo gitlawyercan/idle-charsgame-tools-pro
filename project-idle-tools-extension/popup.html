@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project-Idle-tools</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            width: 260px;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #eee;
+            padding: 8px 10px;
+            font-size: 12px;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 6px;
+            padding-bottom: 4px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        .header .logo { font-size: 16px; }
+        .header .title { font-weight: bold; color: #f0a500; font-size: 13px; }
+        .header .version { color: #888; font-size: 9px; margin-left: auto; }
+        .status-bar {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 6px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 4px;
+            margin-bottom: 6px;
+            font-size: 10px;
+        }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #6dd66d;
+            flex-shrink: 0;
+        }
+        .status-dot.inactive { background: #888; }
+        .status-text { color: #aaa; }
+        .section-title {
+            font-size: 9px;
+            color: #888;
+            margin: 4px 0 2px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .btn {
+            width: 100%;
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.05);
+            color: #ccc;
+            cursor: pointer;
+            font-size: 11px;
+            text-align: left;
+            margin-bottom: 2px;
+            transition: all 0.15s;
+        }
+        .btn:hover {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+        }
+        .btn-switch { border-color: rgba(120,80,200,0.25); background: rgba(120,80,200,0.08); color: #b388ff; }
+        .btn-switch:hover { background: rgba(120,80,200,0.18); }
+        .btn-collect { border-color: rgba(200,150,50,0.25); background: rgba(200,150,50,0.08); color: #f0a500; }
+        .btn-collect:hover { background: rgba(200,150,50,0.18); }
+        .btn-sell { border-color: rgba(0,200,100,0.25); background: rgba(0,200,100,0.08); color: #00e676; }
+        .btn-sell:hover { background: rgba(0,200,100,0.18); }
+        .btn-claim { border-color: rgba(100,100,255,0.25); background: rgba(100,100,255,0.08); color: #7c7cff; }
+        .btn-claim:hover { background: rgba(100,100,255,0.18); }
+        .btn-buy { border-color: rgba(255,152,0,0.25); background: rgba(255,152,0,0.08); color: #ff9800; }
+        .btn-buy:hover { background: rgba(255,152,0,0.18); }
+        .btn-inventory { border-color: rgba(79,195,247,0.25); background: rgba(79,195,247,0.08); color: #4fc3f7; }
+        .btn-inventory:hover { background: rgba(79,195,247,0.18); }
+        .btn-warehouse { border-color: rgba(129,199,132,0.25); background: rgba(129,199,132,0.08); color: #81c784; }
+        .btn-warehouse:hover { background: rgba(129,199,132,0.18); }
+        .btn-skill { border-color: rgba(206,147,216,0.25); background: rgba(206,147,216,0.08); color: #ce93d8; }
+        .btn-skill:hover { background: rgba(206,147,216,0.18); }
+        .btn-stats { border-color: rgba(240,165,0,0.25); background: rgba(240,165,0,0.08); color: #f0a500; }
+        .btn-stats:hover { background: rgba(240,165,0,0.18); }
+        .btn-danger { border-color: rgba(255,80,80,0.2); background: rgba(255,80,80,0.08); color: #ff6b6b; }
+        .btn-danger:hover { background: rgba(255,80,80,0.18); }
+        .running-indicator {
+            display: inline-block;
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-size: 9px;
+            margin-left: 6px;
+        }
+        .running { background: rgba(0,200,200,0.15); color: #00c8c8; }
+        .stopped { background: rgba(255,255,255,0.05); color: #888; }
+        .footer {
+            margin-top: 4px;
+            padding-top: 3px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            text-align: center;
+            font-size: 9px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <span class="logo">📋</span>
+        <span class="title">Project-Idle-tools</span>
+        <span class="version">v11.0-ext</span>
+    </div>
+
+    <div class="status-bar">
+        <span class="status-dot" id="statusDot"></span>
+        <span class="status-text" id="statusText">面板未加载</span>
+    </div>
+
+    <div class="section-title">🔄 功能控制</div>
+    <button class="btn btn-switch" id="btnSwitch">🔄 循环切号 <span id="switchStatus" class="running-indicator stopped">停止</span></button>
+    <button class="btn btn-collect" id="btnCollect">⛏️ 循环采集 <span id="collectStatus" class="running-indicator stopped">停止</span></button>
+    <button class="btn btn-sell" id="btnSell">💰 循环出售 <span id="sellStatus" class="running-indicator stopped">停止</span></button>
+    <button class="btn btn-buy" id="btnBuy">💰 循环购买 <span id="buyStatus" class="running-indicator stopped">停止</span></button>
+    <button class="btn btn-claim" id="btnClaim">📦 循环领取 <span id="claimStatus" class="running-indicator stopped">停止</span></button>
+    <button class="btn btn-inventory" id="btnInventory">🎒 检测背包 <span id="inventoryStatus" class="running-indicator stopped">停止</span></button>
+    <button class="btn btn-warehouse" id="btnWarehouse">🏪 检测仓库 <span id="warehouseStatus" class="running-indicator stopped">停止</span></button>
+    <button class="btn btn-skill" id="btnSkill">📊 检测技能等级 <span id="skillStatus" class="running-indicator stopped">停止</span></button>
+    <button class="btn btn-stats" id="btnStats">📊 数据统计</button>
+    <div class="section-title">🔧 工具</div>
+    <button class="btn" id="btnPanel">🔄 重新加载面板</button>
+    <button class="btn" id="btnToken">🔑 提取API Token</button>
+    <button class="btn" id="btnLogs">📋 查看日志</button>
+    <button class="btn btn-danger" id="btnLogout">🚪 退出登录</button>
+
+    <div class="footer">
+        在 idle.charsgame.com 上运行
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>
